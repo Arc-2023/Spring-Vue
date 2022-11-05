@@ -11,8 +11,7 @@
         v-model="data.content"
         @imgAdd="imgAdd"
         @imgDel="imgDel"
-        @save="submitcontent"
-        :subfield="subfield">
+        @save="savacontent">
 
       <template #right-toolbar-after>
         <div style="
@@ -22,9 +21,9 @@
         align-items: center;
         padding: 3px;
                     ">
-          <el-button type="primary" disabled round >{{ this.data.creater }}</el-button>
-          <el-button type="primary" disabled round >{{ this.data.createdTime }}</el-button>
-          <el-button type="primary" disabled round >{{ this.data.lastedittime }}</el-button>
+          <el-button type="primary" disabled round >{{ data.creater }}</el-button>
+          <el-button type="primary" disabled round >{{ data.createdTime }}</el-button>
+          <el-button type="primary" disabled round >{{ data.lastedittime }}</el-button>
           <el-button
               type="primary"
               circle
@@ -32,6 +31,33 @@
         </div>
       </template>
     </mavon-editor>
+    <el-dialog
+      v-model="dialogtoggle"
+      title="Enter Your Basic Info">
+      <el-form
+        :model="tmp">
+        <el-form-item
+          label="title"
+          >
+          <el-input v-model="tmp.title"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="intro">
+          <el-input v-model="tmp.intro"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button
+            @click="this.dialogtoggle=false"
+          type="info"
+          round>Cancel</el-button>
+        <el-button
+          @click="submitnote"
+          type="success"
+          round>
+        </el-button>
+      </template>
+    </el-dialog>
   </div>
 </div>
 </template>
@@ -67,7 +93,13 @@ export default {
         subfield:false,
         imgs:{},
         id:'',
-        noteid:''
+        title:'',
+        intro:''
+      },
+      dialogtoggle:false,
+      tmp:{
+        title:'',
+        intro:''
       }
 
     }
@@ -90,7 +122,16 @@ export default {
         }
       })
     },
-    submitcontent(){
+     savacontent(){
+      if(this.data["title"]=='' || this.data["intro"]==null){
+        this.dialogtoggle=true
+      }else {
+        this.note.submitcontent(this.data)
+      }
+    },
+    submitnote(){
+      this.data.intro = this.tmp.intro
+      this.data.title=this.tmp.title
       this.note.submitcontent(this.data)
     }
   },
@@ -104,7 +145,8 @@ export default {
       this.data.lastedittime = res.data.data.lastedittime
       this.data.createdTime = res.data.data.createdTime
       this.data.id = res.data.data.id
-      this.data.noteid = res.data.data.noteid
+      this.data.title = res.data.data.title
+      this.data.intro = res.data.data.intro
     })
   }
 }
@@ -118,4 +160,5 @@ export default {
   height: 100%;
   right: 0;
 }
+
 </style>

@@ -1,4 +1,4 @@
-import {deletenote, getAllnotes, getNoteContent, submitcontent, uploadimage} from '@/api/note'
+import {addnote, deletenote, getAllnotes, getNoteContent, submitcontent, uploadimage} from '@/api/note'
 import {defineStore} from "pinia/dist/pinia";
 import {ElMessage} from "element-plus";
 
@@ -11,7 +11,7 @@ export const notestore = defineStore('notestore',{
     actions:{
         getallnotes(username){
             return getAllnotes({username:username}).then((res)=>{
-                if(res.data.code==200){
+                if(res.data.status==200){
                     ElMessage({
                         message:'get notes successfully',
                         type:'success'
@@ -30,7 +30,7 @@ export const notestore = defineStore('notestore',{
         },
         async getnote(id){
            return await getNoteContent({id:id}).then(res=>{
-               if(res.data.code==200){
+               if(res.data.status==200){
                    ElMessage({
                        message:'geted successfully',
                        type:'success'
@@ -38,7 +38,7 @@ export const notestore = defineStore('notestore',{
                    return Promise.resolve(res)
                }else {
                    ElMessage({
-                       message:'geted with wrong code: '+ res.data.message,
+                       message:'geted with wrong status: '+ res.data.message,
                        type:'error'
                    })
                }
@@ -52,11 +52,11 @@ export const notestore = defineStore('notestore',{
         },
         async delitem(id){
             return await deletenote({id:id}).then((res)=>{
-                ElMessage({
-                    message:'del successfully',
-                    type:'success'
-                })
-                return Promise.resolve()
+                    ElMessage({
+                        message:'del successfully',
+                        type:'success'
+                    })
+                    return Promise.resolve()
             }).catch(e=>{
                 ElMessage({
                     message:'del faild:' + e,
@@ -81,8 +81,8 @@ export const notestore = defineStore('notestore',{
             })
         },
         async submitcontent(data){
-            const{id,noteid,content} = data;
-            await submitcontent({id:id,noteid:noteid,content:content}).then(res=>{
+            const{id,title,intro,content} = data;
+            await submitcontent({id:id,title:title,intro:intro,content:content}).then(res=>{
                 ElMessage({
                     message:'img upload successfully',
                     type:'success'
@@ -95,6 +95,31 @@ export const notestore = defineStore('notestore',{
                 })
                 return Promise.reject()
             })
+        },
+        async addnote(data){
+            const {title,intro,creater} = data
+            return await addnote({id:null,title:title,intro:intro,creater:creater})
+                .then(res=>{
+                    if(res.status==200){
+                        ElMessage({
+                            message:'note create successfully',
+                            type:'success'
+                        })
+                        return res.data.data.id
+                    }
+                    ElMessage({
+                        message:'faild add:' + e,
+                        type:'error'
+                    })
+                    return  Promise.reject
+                })
+                .catch(e=>{
+                    ElMessage({
+                        message:'faild add:' + e,
+                        type:'error'
+                    })
+                    return Promise.reject()
+                })
         }
     }
 

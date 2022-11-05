@@ -90,6 +90,7 @@
         prop="startTime"
         label="startTime"></el-table-column>
       <el-table-column
+        sortable=true
         prop="endTime"
         label="endTime"></el-table-column>
       <el-table-column align="right"
@@ -153,11 +154,13 @@
               v-model="tmp.startTime"
               type="datetime"
               range
+              value-format="YYYY-MM-DD HH:mm:ss"
           ></el-date-picker>
           <el-date-picker
               v-model="tmp.endTime"
               type="datetime"
               range
+              value-format="YYYY-MM-DD HH:mm:ss"
           ></el-date-picker>
         </el-form-item>
         <el-form-item label="message">
@@ -214,8 +217,8 @@ export default {
           {
           id:' ',
           name:' ',
-          startTime:' ',
-          endTime:' ',
+          startTime:Date,
+          endTime:Date,
           message:' ',
           type:' ',
           creater:' ',
@@ -263,16 +266,17 @@ export default {
       this.tableD.forEach((item)=>{
         if(item.id==id){
           this.pagest.changeItem(this.tmp)
-          item.startTime=this.tmp.startTime
-          item.endTime=this.tmp.endTime
-          item.name=this.tmp.name
-          item.message=this.tmp.message
-          item.type=this.tmp.type
-          item.tag=this.tmp.tag
-          item.creater=this.tmp.creater
+              .then(()=>{
+                item.startTime=this.tmp.startTime
+                item.endTime=this.tmp.endTime
+                item.name=this.tmp.name
+                item.message=this.tmp.message
+                item.type=this.tmp.type
+                item.tag=this.tmp.tag
+                item.creater=this.tmp.creater
+              })
         }
       })
-
     },
     deleteSelectedItem(){
       this.$refs.table.getSelectionRows().forEach((selecteditem)=>{
@@ -292,24 +296,23 @@ export default {
     handleAdd(){
       this.isChangeMode = false
       this.isEditBoxOpen= (this.isEditBoxOpen==false)
-      this.tmp.id = ' '
-      this.tmp.name = ' '
-      this.tmp.startTime = ' '
-      this.tmp.endTime = ' '
-      this.tmp.tag=' '
-      this.tmp.creater=' '
-      this.tmp.message=' '
-      this.tmp.type=' '
+      this.tmp.id = ''
+      this.tmp.name = ''
+      this.tmp.startTime = ''
+      this.tmp.endTime = ''
+      this.tmp.tag=''
+      this.tmp.creater=''
+      this.tmp.message=''
+      this.tmp.type=''
     },
     addItem(){
-      this.pagest.submitItem(this.tmp).then(info=>{
+      this.pagest.addItem(this.tmp).then((res)=>{
         this.tableD.push(this.tmp)
       })
     },
     refresh(){
-      const username = this.userstore.getUsername
       this.tableD.splice(0,this.tableD.length)
-      this.pagest.getItemss(username).then(res=>{
+      this.pagest.refresh().then(res=>{
         console.log(res)
         res.forEach(item=>{
           this.tableD.push(item);
@@ -321,7 +324,6 @@ export default {
         this.tableD.forEach(item=>{
           if(item.id==row.id){
             item.status = 'Running'
-            return null;
           }
         })
       })
@@ -338,6 +340,9 @@ export default {
     }
   },
   computed:{
+  },
+  mounted() {
+    this.pagest.initStart()
   }
 }
 </script>

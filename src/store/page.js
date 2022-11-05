@@ -1,5 +1,14 @@
 import {acceptHMRUpdate, defineStore} from "pinia/dist/pinia";
-import {addItem, changeItem, delitem, getItems, pauseitem, startItem, submitPushForm} from "@/api/itemanege";
+import {
+    addItem,
+    changeItem,
+    delitem,
+    getItems, initStart,
+    pauseitem,
+    refreshThings,
+    startItem,
+    submitPushForm
+} from "@/api/itemanege";
 import {ElMessage} from "element-plus";
 
 export const pagestore = defineStore('page',{
@@ -15,7 +24,7 @@ export const pagestore = defineStore('page',{
         async changeItem(data) {
             const result = await changeItem(data)
             const dataresult = result.data
-            if (dataresult.code == 200) {
+            if (dataresult.status == 200) {
                 ElMessage({
                     message:'Change Success',
                     type:'success'
@@ -23,41 +32,45 @@ export const pagestore = defineStore('page',{
                 return Promise.resolve('ok')
             } else {
                 ElMessage({
-                    message:'Change Falid : ' + error,
+                    message:'Change Falid : ' + dataresult.message,
                     type:'error'
                 })
-                return Promise.reject(dataresult.message)
-            }
-        },
-        async submitItem(termini) {
-           const result = await addItem(termini)
-            const data = result.data
-            if(data.code==200){
-                ElMessage({
-                    message:'Success added',
-                    type:'success'
-                })
-                return true
-            }
-            else {
                 return Promise.reject()
             }
         },
+        async addItem(data) {
+           return  await addItem(data)
+               .then(res=> {
+                       if (res.status == 200) {
+                           ElMessage({
+                               message: 'Success added',
+                               type: 'success'
+                           })
+                           return true
+                       } else {
+                           return Promise.reject()
+                       }
+                   }).catch(e=>{
+                   ElMessage({
+                       message:'Change Falid : ' + e,
+                       type:'error'
+                   })
+                   return Promise.reject()
+               })
+        },
         async submitPushForm(data){
             const result = await submitPushForm(data)
-            if(result.data.code==200){
+            if(result.data.status==200){
                 return Promise.resolve()
             }else {
                 return Promise.reject()
             }
         },
-        async getItemss(username){
-            console.log(username)
-            const result = await getItems({username:username})
-            console.log(result)
-            if(result.data.code==200){
+        async refresh(username){
+            const result = await refreshThings()
+            if(result.data.status==200){
                 ElMessage({
-                    message:'Successfully geted',
+                    message:'Successfully geted: '+ result.data.message,
                     type:'success'
                 })
                 return result.data.data
@@ -107,6 +120,20 @@ export const pagestore = defineStore('page',{
             }).catch(e=>{
                 ElMessage({
                     message:'Faild to pause: '+ e,
+                    type:'error'
+                })
+                return Promise.reject()
+            })
+        },
+        async initStart(){
+            return await initStart().then(res=>{
+                ElMessage({
+                    message:'Paused',
+                    type:'success'
+                })
+            }).catch(e=>{
+                ElMessage({
+                    message:'Faild to refresh: '+ e,
                     type:'error'
                 })
                 return Promise.reject()

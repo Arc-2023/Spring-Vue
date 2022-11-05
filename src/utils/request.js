@@ -23,7 +23,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
     config=>{
         const data = config.data
-        if(data.code==508){
+        if(data.status==508){
             ElMessageBox.confirm(
                 'Token expired,Trying Relogin?',
                 'Message',
@@ -39,8 +39,11 @@ service.interceptors.response.use(
                     })
                 })
             })
-        }else if(data.code==500){
+        }else if(data.status==500){
             return Promise.reject("Reg Faild")
+        }
+        else if(data.status!=200){
+            return Promise.reject("Faild")
         }
         return config
     },

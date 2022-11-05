@@ -22,7 +22,8 @@
             <div style="justify-content: center">
               <el-button
                 type="success"
-                circle><el-icon><Plus /></el-icon></el-button>
+                circle
+              @click="this.dialog=true"><el-icon><Plus /></el-icon></el-button>
             </div>
           </template>
         </el-table-column>
@@ -30,8 +31,8 @@
             label="title"
             prop="title"></el-table-column>
         <el-table-column
-            label="data"
-            prop="data"></el-table-column>
+            label="intro"
+            prop="intro"></el-table-column>
         <el-table-column
             align="right"
         >
@@ -67,6 +68,36 @@
         </el-table-column>
       </el-table>
     </el-scrollbar>
+    <el-dialog
+        style="border-radius: 15px"
+        draggable=true
+        align-center=true
+      v-model="dialog"
+      title="Save A Note">
+      <el-form
+          :rules="rules"
+        :model="createNoteForm"
+        :label-position="'right'"
+        >
+        <el-form-item label="title" prop="title">
+          <el-input
+            v-model="createNoteForm.title"></el-input>
+        </el-form-item>
+        <el-form-item label="intro" prop="intro">
+          <el-input v-model="createNoteForm.intro"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button
+            @click="calcel"
+          type="info"
+          round>Cancel</el-button>
+        <el-button
+            @click="handleaddnote"
+          type="success"
+          round>Create</el-button>
+      </template>
+    </el-dialog>
   </div>
 </div>
 </template>
@@ -95,7 +126,17 @@ export default {
     return{
       notelist:[
       ],
-      search:''
+      search:'',
+      dialog:false,
+      createNoteForm:{
+        title:'',
+        intro:'',
+        creater:this.userstore.getUsername
+      },
+      rules:{
+        title:[{ required: true, message: 'Please input', trigger: 'blur' }],
+        intro:[{ required: true, message: 'Please input', trigger: 'blur' }]
+      }
 
     }
   },
@@ -103,7 +144,7 @@ export default {
     async getAllnotes(){
       const username = this.userstore.getUsername
       this.note.getallnotes(username).then(res=>{
-        this.notelist = res.data.data.tabledata
+        this.notelist = res.data.data
       })
     },
     goto(id){
@@ -115,12 +156,18 @@ export default {
           'Confirm',
       {
         distinguishCancelAndClose: true,
-            confirmButtonText: 'Delete',
+          confirmButtonText: 'Delete',
           cancelButtonText: 'Calcel',
       }).then(()=>{
         this.note.delitem(id)
       })
-    }
+    },
+    calcel(){
+      this.dialog=false
+    },
+    handleaddnote(){
+      this.note.addnote(this.createNoteForm)
+    },
   },
   mounted() {
     this.getAllnotes()

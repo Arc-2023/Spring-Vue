@@ -25,7 +25,7 @@ export const UserStore = defineStore('user',{
             async login(loginInfo){
                 return await login(loginInfo).then(result=>{
                     console.log(result)
-                    if(result.data.code==200){
+                    if(result.data.status==200){
                         this.token = result.headers.token
                         this.username = result.data.data.username
                         console.log(this.username)

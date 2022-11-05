@@ -28,9 +28,9 @@ export function submitPushForm(data){
         params:data
     })
 }
-export function getItems(data){
+export function refreshThings(data){
     return request({
-        url:'http://192.168.2.247:8888/getUserThings',
+        url:'http://192.168.2.247:8888/refreshthings',
         method:'get',
         params:data
     })
@@ -54,6 +54,12 @@ export function pauseitem(data){
         url:'http://192.168.2.247:8888/pauseitem',
         method:'get',
         params:data
+    })
+}
+export function initStart(){
+    return request({
+        url:'http://192.168.2.247:8888/initstart',
+        method:'get'
     })
 }
 

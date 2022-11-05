@@ -16,7 +16,7 @@ export function getNoteContent(data){
 }
 export function deletenote(data){
     return request({
-        url:'http://192.168.2.247:8888/deletenote',
+        url:'http://192.168.2.247:8888/delnote',
         method:'get',
         params:data
     })
@@ -32,6 +32,13 @@ export function uploadimage(data){
 export function submitcontent(data){
     return request({
         url:'http://192.168.2.247:8888/submitcontent',
+        method:'post',
+        data:data
+    })
+}
+export function addnote(data){
+    return request({
+        url:'http://192.168.2.247:8888/addnote',
         method:'post',
         data:data
     })
