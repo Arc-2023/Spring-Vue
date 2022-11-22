@@ -10,6 +10,7 @@ import {
     submitPushForm
 } from "@/api/itemanege";
 import {ElMessage} from "element-plus";
+import {UserStore} from "@/store/user";
 
 export const pagestore = defineStore('page',{
 
@@ -39,8 +40,7 @@ export const pagestore = defineStore('page',{
             }
         },
         async addItem(data) {
-           return  await addItem(data)
-               .then(res=> {
+           return  await addItem(data).then(res=> {
                        if (res.status == 200) {
                            ElMessage({
                                message: 'Success added',
@@ -70,7 +70,7 @@ export const pagestore = defineStore('page',{
             const result = await refreshThings()
             if(result.data.status==200){
                 ElMessage({
-                    message:'Successfully geted: '+ result.data.message,
+                    message:'Successfully geted',
                     type:'success'
                 })
                 return result.data.data
@@ -108,6 +108,7 @@ export const pagestore = defineStore('page',{
                     message:'Faild to start: '+e,
                     type:'error'
                 })
+                return Promise.reject()
             })
         },
         async pauseitem(id){
@@ -127,10 +128,14 @@ export const pagestore = defineStore('page',{
         },
         async initStart(){
             return await initStart().then(res=>{
-                ElMessage({
-                    message:'Paused',
-                    type:'success'
-                })
+                if(res.data.status==200){
+                    ElMessage({
+                        message:'Init Quartz',
+                        type:'success'
+                    })
+                    return Promise.resolve()
+                }
+
             }).catch(e=>{
                 ElMessage({
                     message:'Faild to refresh: '+ e,

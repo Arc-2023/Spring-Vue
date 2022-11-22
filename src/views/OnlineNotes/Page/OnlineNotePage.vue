@@ -5,9 +5,7 @@
         ref="md"
         style="
         height: 100%;
-        width: 100%;
-        overflow: hidden;
-        border-radius: 15px;"
+        max-width: 100%;"
         v-model="data.content"
         @imgAdd="imgAdd"
         @imgDel="imgDel"
@@ -28,6 +26,11 @@
               type="primary"
               circle
           @click="uploadimages"><el-icon><UploadFilled /></el-icon></el-button>
+          <el-button
+            type="primary"
+            circle
+            @click="changenote"
+            icon="edit"></el-button>
         </div>
       </template>
     </mavon-editor>
@@ -54,7 +57,8 @@
         <el-button
           @click="submitnote"
           type="success"
-          round>
+          round
+        icon="edit">
         </el-button>
       </template>
     </el-dialog>
@@ -133,13 +137,13 @@ export default {
       this.data.intro = this.tmp.intro
       this.data.title=this.tmp.title
       this.note.submitcontent(this.data)
-    }
-  },
-  computed:{
-
-  },
-  async mounted() {
-    await this.note.getnote(this.$route.params.id).then((res) => {
+    },
+    changenote(){
+      this.tmp.title = this.data.title
+      this.tmp.intro = this.data.intro
+      this.dialogtoggle = true
+    },
+    setData: function (res) {
       this.data.content = res.data.data.content
       this.data.creater = res.data.data.creater
       this.data.lastedittime = res.data.data.lastedittime
@@ -147,6 +151,14 @@ export default {
       this.data.id = res.data.data.id
       this.data.title = res.data.data.title
       this.data.intro = res.data.data.intro
+    },
+  },
+  computed:{
+
+  },
+   async mounted() {
+    await this.note.getnote(this.$route.params.id).then((res) => {
+      this.setData(res);
     })
   }
 }
@@ -154,8 +166,9 @@ export default {
 
 <style scoped>
 #main{
-  display: flex;
   justify-content: center;
+  border-radius: 15px;
+  overflow: auto;
   width: 100%;
   height: 100%;
   right: 0;

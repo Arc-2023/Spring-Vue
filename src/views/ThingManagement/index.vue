@@ -17,9 +17,8 @@
           <el-button type="success"
                      icon="plus"
                      @click="handleAdd"
-          circle
-          style="justify-content: center"></el-button>
-
+                     circle
+                     style="justify-items: center"></el-button>
         </template>
         <template #default="scope">
           <div class="expand-card-container">
@@ -90,7 +89,6 @@
         prop="startTime"
         label="startTime"></el-table-column>
       <el-table-column
-        sortable=true
         prop="endTime"
         label="endTime"></el-table-column>
       <el-table-column align="right"
@@ -191,12 +189,15 @@ export default {
     const table = ref('')
     const pagest = pagestore()
     const userstore = UserStore()
-
+    const sortTime = (a,b)=> {
+      return Date.parse(a) < Date.parse(b) ? 1 : 0;
+    }
     return {
       sch,
       table,
       pagest,
-      userstore
+      userstore,
+      sortTime
     }
   },
   data(){
@@ -337,12 +338,15 @@ export default {
           }
         })
       })
-    }
+    },
+
   },
   computed:{
   },
   mounted() {
-    this.pagest.initStart()
+    this.pagest.initStart().then(res=>{
+      this.refresh(this.userstore.getUsername)
+    })
   }
 }
 </script>

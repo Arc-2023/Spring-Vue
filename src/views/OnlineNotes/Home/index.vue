@@ -6,14 +6,14 @@
     <el-scrollbar
     native=false>
       <el-table
-          ref="tab"
-          style="
+        ref="tab"
+        style="
         border-radius: 15px;
         overflow:hidden;
         width: 100%"
-          :data="notelist"
-          :stripe=false
-          :highlight-current-row=true>
+        :data="notelist"
+        :stripe=false
+        :highlight-current-row=true>
         <el-table-column
           type="selection"></el-table-column>
         <el-table-column
@@ -23,7 +23,8 @@
               <el-button
                 type="success"
                 circle
-              @click="this.dialog=true"><el-icon><Plus /></el-icon></el-button>
+                icon="plus"
+              @click="this.dialog=true"></el-button>
             </div>
           </template>
         </el-table-column>

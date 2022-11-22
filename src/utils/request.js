@@ -40,10 +40,13 @@ service.interceptors.response.use(
                 })
             })
         }else if(data.status==500){
-            return Promise.reject("Reg Faild")
+            return Promise.reject("Server Error")
+        }
+        else if(data.status == 404){
+            return Promise.reject("NOT FOUND")
         }
         else if(data.status!=200){
-            return Promise.reject("Faild")
+            return Promise.reject("Faild for other reason")
         }
         return config
     },

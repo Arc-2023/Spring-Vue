@@ -84,13 +84,13 @@ export const notestore = defineStore('notestore',{
             const{id,title,intro,content} = data;
             await submitcontent({id:id,title:title,intro:intro,content:content}).then(res=>{
                 ElMessage({
-                    message:'img upload successfully',
+                    message:'content upload successfully',
                     type:'success'
                 })
                 return Promise.resolve()
             }).catch(e=>{
                 ElMessage({
-                    message:'faild submit:' + e,
+                    message:'faild submit: ' + e,
                     type:'error'
                 })
                 return Promise.reject()
