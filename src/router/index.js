@@ -2,8 +2,8 @@ import {createRouter, createWebHistory} from "vue-router/dist/vue-router";
 import home from "@/views/Home"
 import login from "@/views/Login";
 import onlineNotes from "@/views/OnlineNotes/Home";
-import thingManagement from "@/views/ThingManagement";
-import thingPush from "@/views/ThingPush";
+import thingManagement from "@/views/Thing/manage";
+import thingPush from "@/views/Thing/setting";
 import onlineNotePage from "@/views/OnlineNotes/Page/OnlineNotePage";
 const routes=[
     {
@@ -47,7 +47,7 @@ const routes=[
             {
                 path:'/alist',
                 beforeEnter(){
-                    location.href='http://108.61.81.20:5244/'
+                    location.href='http://119.23.243.88:5244/'
                 }
             }
         ]

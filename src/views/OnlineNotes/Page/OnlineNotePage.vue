@@ -7,8 +7,8 @@
         height: 100%;
         max-width: 100%;"
         v-model="data.content"
-        @imgAdd="imgAdd"
-        @imgDel="imgDel"
+        @imgAdd="$imgAdd"
+        @imgDel="$imgDel"
         @save="savacontent">
 
       <template #right-toolbar-after>
@@ -73,6 +73,7 @@ import '@wangeditor/editor/dist/css/style.css' // 引入 css
 
 import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
 import {ElMessage} from "element-plus";
+import {uploadimage} from "@/api/note";
 export default {
   name: "OnlineNotePage",
   components:{
@@ -109,22 +110,23 @@ export default {
     }
   },
   methods:{
-    imgAdd(pos,$file){
-      this.imgs[pos]=$file
+    $imgAdd(pos,$file){
+      this.uploadimage(pos,$file)
     },
-    imgDel(pos){
-      delete this.imgs[pos]
+    $imgDel(pos){
+      this.delimage(this.imgs[pos])
     },
-    uploadimages(){
-      const formdata = new FormData
-      for(var img in this.imgs){
-        formdata.append(img,this.imgs[img])
-      }
-      this.note.upload(formdata).then(res=>{
-        for(var img in res.data.imgs){
-          this.md.$img2Url(img[0],img[1])
-        }
+    uploadimage(pos,$file){
+      var formdata = new FormData();
+      formdata.append('file',$file)
+      console.log(this.user.getUsername)
+      formdata.append('username',this.user.getUsername)
+      this.note.uploadimg(formdata,this.user.getUsername).then(res=>{
+          this.md.$img2Url(pos,'http://119.23.243.88:8888/files/imgs/'+ res.data.message)
       })
+    },
+    delimage(imgname){
+      this.note.delimg(imgname)
     },
      savacontent(){
       if(this.data["title"]=='' || this.data["intro"]==null){

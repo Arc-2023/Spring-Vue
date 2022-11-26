@@ -53,7 +53,7 @@ service.interceptors.response.use(
     error => {
         ElMessage({
             message:error,
-            type:'Re'
+            type:'error'
         })
         return error
     }

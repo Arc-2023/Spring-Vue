@@ -18,7 +18,7 @@ router.beforeEach(async (to,from,next)=>{
     if (to.matched.some(record => record.meta.requiresAuth)) { // 判断该路由是否需要登录权限
         const token = userStore.getoken
         const expiredtime = userStore.getexpiretime
-        if(Date.now()>Date.parse(expiredtime)){
+        if(Date.now()>Date.parse(expiredtime) || expiredtime == null){
             ElMessage({
                 message:'Token expired,Redirecting to login',
                 type:'error'

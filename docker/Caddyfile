@@ -1,0 +1,8 @@
+{
+http_port 8080
+auto_https off
+}
+:8080 127.0.0.1:8080 {
+    root * /www
+    file_server
+}

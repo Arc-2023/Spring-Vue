@@ -7,7 +7,7 @@
         ref="table"
       :data="filtedData"
         stripe=true
-        max-height="100%">
+      height="100%">
       <el-table-column
         type="selection"/>
       <el-table-column
@@ -54,6 +54,15 @@
               <el-divider type="vertical"/>
               <div><span>{{scope.row.creater}}</span></div>
             </el-card>
+            <el-card
+              class="el-card"
+              shadow="hover"
+            >
+              <div><span>startTime</span></div>
+              <el-divider type="vertical"/>
+              <div><span>{{scope.row.startTime}}</span></div>
+            </el-card>
+
           </div>
         </template>
       </el-table-column>
@@ -85,9 +94,6 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="startTime"
-        label="startTime"></el-table-column>
       <el-table-column
         prop="endTime"
         label="endTime"></el-table-column>
@@ -131,11 +137,19 @@
       </el-table-column>
     </el-table>
     </el-scrollbar>
-    <ElDrawer v-model="isEditBoxOpen"
-              direction="rtl"
-              modal=false
-              size="40%"
-    >
+    <el-dialog
+        v-model="isEditBoxOpen"
+        title="Enter Your Basic Info"
+        style="
+        display: flex;
+        flex-direction: column;
+        max-width: 1000px;
+        align-content: center;
+        align-items: center;
+        align-self: center;
+        padding: 15px;
+        overflow: hidden;
+        border-radius: 15px">
       <el-form :model="tmp"
                label-position="right"
       label-width="100px">
@@ -147,14 +161,17 @@
         <el-form-item label="TimePicker"
         style="
         display: flex;
-         justify-content: space-around">
+        justify-content: space-between;
+        flex: 1  ">
           <el-date-picker
               v-model="tmp.startTime"
               type="datetime"
               range
               value-format="YYYY-MM-DD HH:mm:ss"
+              style="flex: 1"
           ></el-date-picker>
           <el-date-picker
+              style="flex: 1"
               v-model="tmp.endTime"
               type="datetime"
               range
@@ -173,7 +190,7 @@
       </el-form>
       <el-button type="primary"
                  @click="this.isChangeMode==true ? changeTableItem(tmp.id) : addItem()">{{this.isChangeMode ? "Change" : "Add"}}</el-button>
-    </ElDrawer>
+    </el-dialog>>
   </div>
 </template>
 
@@ -275,6 +292,16 @@ export default {
                 item.type=this.tmp.type
                 item.tag=this.tmp.tag
                 item.creater=this.tmp.creater
+                this.isChangeMode=false
+                this.isEditBoxOpen= false
+                this.tmp.id = ''
+                this.tmp.name = ''
+                this.tmp.startTime = ''
+                this.tmp.endTime = ''
+                this.tmp.tag=''
+                this.tmp.creater=''
+                this.tmp.message=''
+                this.tmp.type=''
               })
         }
       })
@@ -297,18 +324,27 @@ export default {
     handleAdd(){
       this.isChangeMode = false
       this.isEditBoxOpen= (this.isEditBoxOpen==false)
-      this.tmp.id = ''
-      this.tmp.name = ''
-      this.tmp.startTime = ''
-      this.tmp.endTime = ''
-      this.tmp.tag=''
-      this.tmp.creater=''
-      this.tmp.message=''
-      this.tmp.type=''
+      //this.tmp.id = ''
+      //this.tmp.name = ''
+      //this.tmp.startTime = ''
+      //this.tmp.endTime = ''
+      //this.tmp.tag=''
+      //this.tmp.creater=''
+      //this.tmp.message=''
+      //this.tmp.type=''
     },
     addItem(){
-      this.pagest.addItem(this.tmp).then((res)=>{
+      this.pagest.addItem(this.tmp).then(()=>{
         this.tableD.push(this.tmp)
+        this.isEditBoxOpen=false
+        this.tmp.id = ''
+        this.tmp.name = ''
+        this.tmp.startTime = ''
+        this.tmp.endTime = ''
+        this.tmp.tag=''
+        this.tmp.creater=''
+        this.tmp.message=''
+        this.tmp.type=''
       })
     },
     refresh(){
@@ -334,7 +370,6 @@ export default {
         this.tableD.forEach((item)=>{
           if(item.id==row.id){
             item.status='Pause'
-            return null;
           }
         })
       })
@@ -357,17 +392,18 @@ export default {
   padding:0;
 }
 #body{
-  display: flex;
   position: relative;
   width: 100%;
+  height: 100%;
+  overflow: auto;
+  border-radius: 15px;
 }
 .expand-card-container{
   padding:20px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 .el-table{
-  border-radius: 15px;
   justify-content: center;
   justify-items: center;
 }
@@ -376,9 +412,10 @@ export default {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  width: 20%;
+  width: 15%;
   align-content: center;
   justify-items: center;
+  align-items: center;
   background-image: linear-gradient(
       320deg,
       hsl(240deg 100% 20%) 0%,

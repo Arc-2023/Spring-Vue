@@ -192,7 +192,7 @@ export default {
   top: 0;
   left: 0;
   background: #42b983;
-  padding: 5vh 0vh;
+  padding: 1vh 0vh;
 }
 
 .aside{

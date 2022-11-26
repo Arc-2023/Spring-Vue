@@ -1,4 +1,4 @@
-import {addnote, deletenote, getAllnotes, getNoteContent, submitcontent, uploadimage} from '@/api/note'
+import {addnote, deletenote, delimg, getAllnotes, getNoteContent, submitcontent, uploadimage} from '@/api/note'
 import {defineStore} from "pinia/dist/pinia";
 import {ElMessage} from "element-plus";
 
@@ -65,13 +65,13 @@ export const notestore = defineStore('notestore',{
                 return Promise.reject()
             })
         },
-        async upload(formdata){
-            await uploadimage(formdata).then((res)=>{
+        async uploadimg(formdata,username){
+           return await uploadimage({formdata:formdata,username:username}).then((res)=>{
                 ElMessage({
                     message:'img upload successfully',
                     type:'success'
                 })
-                return res.data.url
+                return res
             }).catch(e=>{
                 ElMessage({
                     message:'img upload faild:' + e,
@@ -120,6 +120,17 @@ export const notestore = defineStore('notestore',{
                     })
                     return Promise.reject()
                 })
+        },
+        async delimg(data){
+            return await delimg({filename:data}).then(res=>{
+                ElMessage({
+                    message:'image upload successfully',
+                    type:'success'
+                })
+                return Promise.resolve()
+            }).catch(e=>{
+                return Promise.reject(e)
+            })
         }
     }
 
