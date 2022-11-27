@@ -35,6 +35,10 @@
       </template>
     </mavon-editor>
     <el-dialog
+        style="
+        overflow: hidden;
+        border-radius: 15px;
+        "
       v-model="dialogtoggle"
       title="Enter Your Basic Info">
       <el-form

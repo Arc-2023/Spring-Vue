@@ -144,6 +144,7 @@ export default {
   methods:{
     async getAllnotes(){
       const username = this.userstore.getUsername
+      this.notelist = ''
       this.note.getallnotes(username).then(res=>{
         this.notelist = res.data.data
       })
@@ -160,14 +161,19 @@ export default {
           confirmButtonText: 'Delete',
           cancelButtonText: 'Calcel',
       }).then(()=>{
-        this.note.delitem(id)
+        this.note.delitem(id).then(()=>{
+          this.getAllnotes()
+        })
       })
     },
     calcel(){
       this.dialog=false
     },
     handleaddnote(){
-      this.note.addnote(this.createNoteForm)
+      this.note.addnote(this.createNoteForm).then(()=>{
+        this.getAllnotes()
+        this.dialog = false
+      })
     },
   },
   mounted() {

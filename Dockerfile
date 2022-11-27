@@ -1,12 +1,11 @@
 
 #VUE3
-FROM caddy
-VOLUME  /tmp/caddy
-WORKDIR /tmp/caddy
-COPY dist /www
-COPY docker/Caddyfile /etc/caddy/Caddyfile
+FROM caddy:2.6.1-alpine
+#VOLUME  /tmp/caddy
+#WORKDIR /tmp/caddy
+ADD dist/ /www
+ADD docker/Caddyfile /etc/caddy/Caddyfile
 EXPOSE 8080
 EXPOSE 80
-
 #AriaNG
 
