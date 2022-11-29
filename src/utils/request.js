@@ -45,6 +45,12 @@ service.interceptors.response.use(
         else if(data.status == 404){
             return Promise.reject("NOT FOUND")
         }
+        else if(data.status == 400){
+            router.push('/login').then(()=>{
+                return Promise.reject("NOT FOUND")
+            })
+
+        }
         else if(data.status!=200){
             return Promise.reject("Faild for other reason")
         }
