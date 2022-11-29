@@ -123,7 +123,7 @@
       </el-scrollbar>
 
       <div class="aside-bottom">
-        <el-button type="primary" circle size="small"><el-icon><Close/></el-icon></el-button>
+        <el-button type="primary" circle size="small" @click="toLogin"><el-icon><Close/></el-icon></el-button>
         <el-button v-if="!asidebar.isCollapse" type="primary" circle size="small"><el-icon><More/></el-icon></el-button>
         <el-button type="primary" circle size="small" @click="toggleAsideBar"><el-icon><Expand /></el-icon></el-button>
       </div>
@@ -170,6 +170,9 @@ export default {
   methods:{
     toggleAsideBar(){
       this.asidebar.isCollapse=!this.asidebar.isCollapse
+    },
+    toLogin(){
+      this.$router.push('/login')
     }
   },
   watch:{},
