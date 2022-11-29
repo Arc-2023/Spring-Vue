@@ -1,6 +1,6 @@
 
 #VUE3
-FROM caddy:2.6.1-alpine
+FROM caddy
 #VOLUME  /tmp/caddy
 #WORKDIR /tmp/caddy
 ADD dist/ /www
