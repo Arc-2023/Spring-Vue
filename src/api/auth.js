@@ -9,7 +9,14 @@ export function login(data){
 }
 export function register(data){
     return request({
-        url:'backend+register',
+        url:backend+'register',
+        method:'get',
+        params:data
+    })
+}
+export function changeAlertToken(data){
+    return request({
+        url:backend+'changeAlertyToken',
         method:'get',
         params:data
     })

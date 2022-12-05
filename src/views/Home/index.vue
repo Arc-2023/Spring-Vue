@@ -47,11 +47,13 @@
                 <el-icon><Avatar /></el-icon>
                 <span>个人</span>
               </template>
+              <RouterLink to="/myprofile">
               <el-menu-item class="el-menu-item" index="1-1">
                 <div class="sub-menu-item-content">
                   <span>个人信息</span>
                 </div>
               </el-menu-item>
+              </RouterLink>
               <el-menu-item class="el-menu-item" index="1-2">
                 <div class="sub-menu-item-content">
                   <span>系统管理</span>

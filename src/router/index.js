@@ -5,6 +5,7 @@ import onlineNotes from "@/views/OnlineNotes/Home";
 import thingManagement from "@/views/Thing/manage";
 import thingPush from "@/views/Thing/setting";
 import onlineNotePage from "@/views/OnlineNotes/Page/OnlineNotePage";
+import myProfile from "@/views/MyProfile";
 const routes=[
     {
     path:'/login',
@@ -19,6 +20,11 @@ const routes=[
             requiresAuth : true
         },
         children:[
+            {
+              path:'/myprofile',
+              name: 'myprofile',
+              component:myProfile
+            },
             {
                 path:'/thingmanage',
                 name:'thingmanage',

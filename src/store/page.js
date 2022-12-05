@@ -14,15 +14,16 @@ import {UserStore} from "@/store/user";
 
 export const pagestore = defineStore('page',{
 
+
     state:()=>{
         return{
             submit:false,
             AppId:''
-
         }
     },
     actions:{
         async changeItem(data) {
+
             const result = await changeItem(data)
             const dataresult = result.data
             if (dataresult.status == 200) {
@@ -40,6 +41,13 @@ export const pagestore = defineStore('page',{
             }
         },
         async addItem(data) {
+            const userstore = UserStore()
+            if(userstore.getalertToken==' ' || userstore.getalertToken==null){
+                ElMessage({
+                    message:'Alert Token null',
+                    type:'error'
+                })
+            }
            return  await addItem(data).then(res=> {
                        if (res.status == 200) {
                            ElMessage({

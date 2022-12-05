@@ -143,17 +143,12 @@
         style="
         display: flex;
         flex-direction: column;
-        max-width: 1000px;
         align-content: center;
-        align-items: center;
-        align-self: center;
-        padding: 15px;
-        overflow: hidden;
+        overflow: auto;
         border-radius: 15px">
       <el-form :model="tmp"
                label-position="right"
       label-width="100px">
-
         <el-form-item label="name">
           <el-input v-model="tmp.name">
           </el-input>
@@ -188,9 +183,12 @@
           <el-input v-model="tmp.type"/>
         </el-form-item>
       </el-form>
-      <el-button type="primary"
-                 @click="this.isChangeMode==true ? changeTableItem(tmp.id) : addItem()">{{this.isChangeMode ? "Change" : "Add"}}</el-button>
-    </el-dialog>>
+
+      <template #footer>
+        <el-button type="primary"
+                   @click="this.isChangeMode==true ? changeTableItem(tmp.id) : addItem()">{{this.isChangeMode ? "Change" : "Add"}}</el-button>
+      </template>
+    </el-dialog>
   </div>
 </template>
 

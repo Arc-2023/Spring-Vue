@@ -7,10 +7,11 @@ import {
     setUsername,
     getRole,
     setRole,
-    setNextExpireTime, getNextExpireTime
+    setNextExpireTime, getNextExpireTime, getalertToken, setalertToken
 } from "@/utils/cookies";
-import {login, register} from "@/api/auth";
+import {changeAlertToken, login, register} from "@/api/auth";
 import {ElMessage} from "element-plus";
+import router from "@/router";
 
 export const UserStore = defineStore('user',{
     state:()=>({
@@ -20,30 +21,31 @@ export const UserStore = defineStore('user',{
             userdata:'',
             nextexpiretime:getNextExpireTime(),
             role:getRole(),
+            alertToken:getalertToken()
     }),
     actions:{
             async login(loginInfo){
-                return await login(loginInfo).then(result=>{
-                    console.log(result)
-                    if(result.data.status==200){
-                        this.token = result.headers.token
-                        this.username = result.data.data.username
-                        console.log(this.username)
-                        this.avatar = result.data.data.avatar
-                        this.role = result.data.data.role
-                        this.nextexpiretime = result.data.data.nextexpiretime
-                        setToken(this.token)
-                        setUsername(this.username)
-                        setRole(this.role)
-                        setNextExpireTime(this.nextexpiretime)
+                return await login(loginInfo).then(res=>{
+                    if(res.data.status==200){
+                        setToken(res.headers.token)
+                        setUsername(res.data.data.username)
+                        setRole(res.data.data.role)
+                        setNextExpireTime(res.data.data.nextexpiretime)
+                        if(res.data.data.alertToken==null){
+                            ElMessage({
+                                message:'token is null, begin push after setting it',
+                                type:'error'
+                            })
+                        }
+                        else {setalertToken(res.data.data.alertToken)}
                         ElMessage({
-                            message:result.data.data.message,
+                            message:res.data.data.message,
                             type:'success'
                         })
                         return 'ok'
                     }else {
                         ElMessage({
-                            message:result.msg,
+                            message:res.msg,
                             type:'error'
                         })
                         return Promise.reject('faild')
@@ -68,6 +70,7 @@ export const UserStore = defineStore('user',{
                         message:'register success',
                         type:'success'
                     })
+                    router.push("/")
                     return Promise.resolve()
                 }).catch(e=>{
                     ElMessage({
@@ -76,6 +79,22 @@ export const UserStore = defineStore('user',{
                     })
                     return Promise.reject('faild to reg')
                 })
+        },
+        async changeAlertToken(token){
+                return await changeAlertToken({alertToken:token,username:this.state.username}).then(res=>{
+                    ElMessage({
+                        message:'successfully changed token',
+                        type:'success'
+                    })
+                    return Promise.resolve()
+                }).catch(e=>{
+                    ElMessage({
+                        message:'change faild: '+e,
+                        type:'success'
+                    })
+                    return Promise.reject()
+                })
+
         }
         },
     getters:{
@@ -96,6 +115,9 @@ export const UserStore = defineStore('user',{
         },
         getexpiretime(state){
             return state.nextexpiretime
+        },
+        getalertToken(state){
+            return state.alertToken
         }
     }
 })

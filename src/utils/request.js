@@ -39,19 +39,19 @@ service.interceptors.response.use(
                     })
                 })
             })
-        }else if(data.status==500){
+        }else if(data.status==500 || config.status==500){
             return Promise.reject("Server Error")
         }
-        else if(data.status == 404){
+        else if(data.status == 404 || config.status==404){
             return Promise.reject("NOT FOUND")
         }
-        else if(data.status == 400){
+        else if(data.status == 400 || config.status==400){
             router.push('/login').then(()=>{
                 return Promise.reject("NOT FOUND")
             })
 
         }
-        else if(data.status!=200){
+        else if(data.status!=200 || config.status!=200){
             return Promise.reject("Faild for other reason")
         }
         return config

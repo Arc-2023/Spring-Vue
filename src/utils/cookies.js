@@ -26,3 +26,10 @@ export function setNextExpireTime(time){
 export function getNextExpireTime(){
     return Cookie.get('nextexpiretime')
 }
+export function getalertToken(){
+    return Cookie.get('alertToken')
+}
+export function setalertToken(token){
+    return Cookie.set('alertToken',token)
+}
+
