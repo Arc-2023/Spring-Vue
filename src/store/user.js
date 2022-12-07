@@ -36,6 +36,7 @@ export const UserStore = defineStore('user',{
                                 message:'token is null, begin push after setting it',
                                 type:'error'
                             })
+                            setalertToken('')
                         }
                         else {setalertToken(res.data.data.alertToken)}
                         ElMessage({

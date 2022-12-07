@@ -8,64 +8,7 @@
       :data="filtedData"
         stripe=true
       height="100%">
-      <el-table-column
-        type="selection"/>
-      <el-table-column
-        type="expand"
-      style="transition: 0.9s">
-        <template #header>
-          <el-button type="success"
-                     icon="plus"
-                     @click="handleAdd"
-                     circle
-                     style="justify-items: center"></el-button>
-        </template>
-        <template #default="scope">
-          <div class="expand-card-container">
-            <el-card
-                class="el-card"
-                shadow="hover"
-            >
-              <div><span>message</span></div>
-              <el-divider type="vertical"/>
-              <div><span>{{scope.row.message}}</span></div>
-            </el-card>
-            <el-card
-              class="el-card"
-              shadow="hover"
-            >
-              <div><span>type</span></div>
-              <el-divider type="vertical"/>
-              <div><span>{{scope.row.type}}</span></div>
-            </el-card>
-            <el-card
-              class="el-card"
-              shadow="hover"
-            >
-              <div><span>tag</span></div>
-              <el-divider type="vertical"/>
-              <div><span>{{scope.row.tag}}</span></div>
-            </el-card>
-            <el-card
-              class="el-card"
-              shadow="hover"
-            >
-              <div><span>creater</span></div>
-              <el-divider type="vertical"/>
-              <div><span>{{scope.row.creater}}</span></div>
-            </el-card>
-            <el-card
-              class="el-card"
-              shadow="hover"
-            >
-              <div><span>startTime</span></div>
-              <el-divider type="vertical"/>
-              <div><span>{{scope.row.startTime}}</span></div>
-            </el-card>
 
-          </div>
-        </template>
-      </el-table-column>
       <el-table-column
           prop="name"
           label="Name"
@@ -135,6 +78,65 @@
                      circle><el-icon><VideoPause /></el-icon></el-button>
         </template>
       </el-table-column>
+
+      <el-table-column
+          type="expand"
+          style="transition: 0.9s">
+        <template #header>
+          <el-button type="success"
+                     icon="plus"
+                     @click="handleAdd"
+                     circle
+                     style="justify-items: center"></el-button>
+        </template>
+        <template #default="scope">
+          <div class="expand-card-container">
+            <el-card
+                class="el-card"
+                shadow="hover"
+            >
+              <div><span>message</span></div>
+              <el-divider type="vertical"/>
+              <div><span>{{scope.row.message}}</span></div>
+            </el-card>
+            <el-card
+                class="el-card"
+                shadow="hover"
+            >
+              <div><span>type</span></div>
+              <el-divider type="vertical"/>
+              <div><span>{{scope.row.type}}</span></div>
+            </el-card>
+            <el-card
+                class="el-card"
+                shadow="hover"
+            >
+              <div><span>tag</span></div>
+              <el-divider type="vertical"/>
+              <div><span>{{scope.row.tag}}</span></div>
+            </el-card>
+            <el-card
+                class="el-card"
+                shadow="hover"
+            >
+              <div><span>creater</span></div>
+              <el-divider type="vertical"/>
+              <div><span>{{scope.row.creater}}</span></div>
+            </el-card>
+            <el-card
+                class="el-card"
+                shadow="hover"
+            >
+              <div><span>startTime</span></div>
+              <el-divider type="vertical"/>
+              <div><span>{{scope.row.startTime}}</span></div>
+            </el-card>
+
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column
+          type="selection"/>
     </el-table>
     </el-scrollbar>
     <el-dialog

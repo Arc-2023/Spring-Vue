@@ -16,7 +16,7 @@ export function register(data){
 }
 export function changeAlertToken(data){
     return request({
-        url:backend+'changeAlertyToken',
+        url:backend+'changeAlertToken',
         method:'get',
         params:data
     })

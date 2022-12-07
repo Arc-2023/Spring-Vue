@@ -37,28 +37,28 @@ export function refreshThings(data){
 }
 export function delitem(data){
     return request({
-        url:'http://119.23.243.88:8888/delitem',
+        url:backend+'delitem',
         method:'get',
         params:data
     })
 }
 export function startItem(data){
     return request({
-        url:'http://119.23.243.88:8888/startitem',
+        url:backend+'startitem',
         method:'get',
         params:data
     })
 }
 export function pauseitem(data){
     return request({
-        url:'http://119.23.243.88:8888/pauseitem',
+        url:backend+'pauseitem',
         method:'get',
         params:data
     })
 }
 export function initStart(){
     return request({
-        url:'http://119.23.243.88:8888/initstart',
+        url:backend+'initstart',
         method:'get'
     })
 }
