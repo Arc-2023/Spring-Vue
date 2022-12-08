@@ -31,14 +31,23 @@ export const UserStore = defineStore('user',{
                         setUsername(res.data.data.username)
                         setRole(res.data.data.role)
                         setNextExpireTime(res.data.data.nextexpiretime)
+                        this.token = res.headers.token
+                        this.username = res.data.data.username
+                        this.role = res.data.data.role
+                        this.nextexpiretime = res.data.data.nextexpiretime
                         if(res.data.data.alertToken==null){
                             ElMessage({
                                 message:'token is null, begin push after setting it',
                                 type:'error'
                             })
                             setalertToken('')
+                            this.alertToken = ''
                         }
-                        else {setalertToken(res.data.data.alertToken)}
+                        else
+                        {
+                            setalertToken(res.data.data.alertToken)
+                            this.alertToken = 'res.data.data.alertToken'
+                        }
                         ElMessage({
                             message:res.data.data.message,
                             type:'success'
@@ -100,7 +109,7 @@ export const UserStore = defineStore('user',{
         },
     getters:{
         getoken(state){
-            return state.token == ' ' ? getToken() : state.token;
+            return state.token;
         },
         getAvatar(state){
             return state.avatar
