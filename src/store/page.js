@@ -48,7 +48,7 @@ export const pagestore = defineStore('page',{
                     type:'error'
                 })
             }
-           return  await addItem(data).then(res=> {
+           return await addItem(data).then(res=> {
                        if (res.status == 200) {
                            ElMessage({
                                message: 'Success added',

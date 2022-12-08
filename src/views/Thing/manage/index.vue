@@ -334,6 +334,7 @@ export default {
       //this.tmp.type=''
     },
     addItem(){
+      this.tmp.id=' '
       this.pagest.addItem(this.tmp).then(()=>{
         this.tableD.push(this.tmp)
         this.isEditBoxOpen=false
